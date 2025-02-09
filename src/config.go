@@ -58,7 +58,7 @@ func loadOrCreateConfig() (Config, error) {
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		config = Config{
 			Program: "code",
-			Keys:    []Key{{0x32, 0x33}},
+			Keys:    []Key{{220, 49}},
 		}
 
 		err := saveConfig(config)

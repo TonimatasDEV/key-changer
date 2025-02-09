@@ -39,7 +39,7 @@ func onReady() {
 				cmd.Stderr = nil
 				err := cmd.Start()
 				if err != nil {
-					log.Println("Error opening the configuration file with VSCode:", err)
+					log.Println("Error opening the configuration file with \""+KeyChangerConfig.Program+"\":", err)
 					return
 				}
 			case <-keyPressItem.ClickedCh:

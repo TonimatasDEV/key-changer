@@ -34,7 +34,8 @@ func initializeVars() {
 }
 
 type Config struct {
-	Keys []Key `json:"keys"`
+	Program string `json:"open-config-program"`
+	Keys    []Key  `json:"keys"`
 }
 
 type Key struct {
@@ -56,7 +57,8 @@ func loadOrCreateConfig() (Config, error) {
 
 	if _, err := os.Stat(configFile); os.IsNotExist(err) {
 		config = Config{
-			Keys: []Key{{0x32, 0x33}},
+			Program: "code",
+			Keys:    []Key{{0x32, 0x33}},
 		}
 
 		err := saveConfig(config)

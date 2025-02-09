@@ -21,12 +21,12 @@ func InitTray() {
 func onReady() {
 	systray.SetIcon(iconData)
 	systray.SetTitle("Key-Changer")
-	systray.SetTooltip("Change keyboard keys to other.")
+	systray.SetTooltip("Making one key press act as another.")
 
-	open := systray.AddMenuItem("Config", "Open config file.")
-	reload := systray.AddMenuItem("Reload", "Reload config.")
+	open := systray.AddMenuItem("Config", "Edit the configuration file.")
+	reload := systray.AddMenuItem("Reload", "Reload the configuration.")
 	systray.AddSeparator()
-	keyPressItem = systray.AddMenuItemCheckbox("Press-Key", "Click this and press a key to know code.", false)
+	keyPressItem = systray.AddMenuItemCheckbox("View key code", "Click to press a key and view its code.", false)
 	systray.AddSeparator()
 	exit := systray.AddMenuItem("Close", "Close Key-Changer.")
 
@@ -34,15 +34,20 @@ func onReady() {
 		for {
 			select {
 			case <-open.ClickedCh:
-
 				cmd := exec.Command("code", configFile)
 				cmd.Stdout = nil
 				cmd.Stderr = nil
-				cmd.Start()
+				err := cmd.Start()
+				if err != nil {
+					log.Println("Error opening the configuration file:", err)
+					return
+				}
 			case <-keyPressItem.ClickedCh:
 				if keyPressItem.Checked() {
 					keyPressItem.Uncheck()
+					keyPressItem.SetTitle("View key code")
 				} else {
+					keyPressItem.SetTitle("Press-Key")
 					keyPressItem.Check()
 				}
 			case <-reload.ClickedCh:

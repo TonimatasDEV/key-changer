@@ -34,12 +34,12 @@ func onReady() {
 		for {
 			select {
 			case <-open.ClickedCh:
-				cmd := exec.Command("code", configFile)
+				cmd := exec.Command(KeyChangerConfig.Program, configFile)
 				cmd.Stdout = nil
 				cmd.Stderr = nil
 				err := cmd.Start()
 				if err != nil {
-					log.Println("Error opening the configuration file:", err)
+					log.Println("Error opening the configuration file with VSCode:", err)
 					return
 				}
 			case <-keyPressItem.ClickedCh:

@@ -3,9 +3,11 @@ package src
 import (
 	_ "embed"
 	"github.com/getlantern/systray"
+	"golang.org/x/sys/windows"
 	"log"
 	"os"
 	"os/exec"
+	"syscall"
 )
 
 var (
@@ -35,8 +37,7 @@ func onReady() {
 			select {
 			case <-open.ClickedCh:
 				cmd := exec.Command(KeyChangerConfig.Program, configFile)
-				cmd.Stdout = nil
-				cmd.Stderr = nil
+				cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: windows.CREATE_NO_WINDOW}
 				err := cmd.Start()
 				if err != nil {
 					log.Println("Error opening the configuration file with \""+KeyChangerConfig.Program+"\":", err)
